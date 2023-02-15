@@ -6,6 +6,7 @@ from config_reader import config
 from handlers import root_handler
 
 
+
 async def main():
     logging.basicConfig(level=logging.INFO)
     bot = Bot(token=config.bot_token.get_secret_value())
