@@ -13,3 +13,14 @@ router = Router()
 async def cmd_start(msg: Message, state: FSMContext):
     await state.clear()
     await msg.answer(standartMessages.start, parse_mode="HTML")
+
+
+@router.message(Command(commands=["contacts"]))
+async def cmd_start(msg: Message, state: FSMContext):
+    await state.clear()
+    await msg.answer(standartMessages.contacts, parse_mode="HTML")
+
+@router.message(Command(commands=["documents"]))
+async def cmd_documents(msg:Message, state: FSMContext):
+    '''TODO: send documents'''
+    await state.clear()
