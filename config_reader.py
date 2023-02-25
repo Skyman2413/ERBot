@@ -1,6 +1,4 @@
-# coding: utf8
 from pydantic import BaseSettings, SecretStr
-import json
 
 
 class Settings(BaseSettings):

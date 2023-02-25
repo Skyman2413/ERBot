@@ -1,10 +1,8 @@
-# coding: utf8
 from aiogram import Router
 from aiogram.filters import Command, Text
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, FSInputFile, InputMediaDocument
 import os
-
 import keyboards.common_kb
 import standartMessages
 

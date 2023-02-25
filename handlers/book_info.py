@@ -1,11 +1,9 @@
 import os
-
-from aiogram import Router, F
+from aiogram import Router
 from aiogram.filters import Command, Text
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import Message, CallbackQuery, InputMediaDocument, FSInputFile, InputMediaPhoto
-
+from aiogram.types import Message, CallbackQuery, FSInputFile, InputMediaPhoto
 import keyboards.common_kb
 import standartMessages
 
@@ -42,5 +40,3 @@ async def thebook_first(callback: CallbackQuery, state: FSMContext):
         await callback.message.answer(standartMessages.back_to_services)
         await state.clear()
         await callback.answer()
-
-
