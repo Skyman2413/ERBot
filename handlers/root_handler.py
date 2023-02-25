@@ -25,13 +25,9 @@ async def cmd_start(msg: Message, state: FSMContext):
 
 @router.message(Command(commands=["documents"]))
 async def cmd_documents(msg: Message, state: FSMContext):
-    '''TODO: send documents'''
-    media = []
     root_path = os.getcwd()
-    file1 = FSInputFile(root_path + r"\documents\Rodoslovnaya kniga.pdf", filename="Родословная книга.pdf")
-    file2 = FSInputFile(root_path + r"\documents\Rodoslovnaya kniga.pdf", filename="Историческая родословная касимовских татар.pdf")
-    file3 = FSInputFile(root_path + r"\documents\Chetyre veka istorii odnoy semyi.pdf", filename="Четыре века истории одной семьи.pdf")
+    file1 = FSInputFile(root_path + r"\documents\Диплом кандидата.jpg", filename="Диплом кандидата.jpg")
+    file2 = FSInputFile(root_path + r"\documents\Диплом магистра.jpg", filename="Диплом магистра.jpg")
     await msg.answer_media_group([InputMediaDocument(media=file1),
-                                  InputMediaDocument(media=file2),
-                                  InputMediaDocument(media=file3, caption=standartMessages.advert)])
+                                  InputMediaDocument(media=file2, caption=standartMessages.documents)])
     await state.clear()

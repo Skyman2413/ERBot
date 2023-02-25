@@ -2,7 +2,7 @@ from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 
 import keyboards.common_kb
 import standartMessages
@@ -21,13 +21,13 @@ async def cmd_faq(msg: Message, state: FSMContext):
     await state.set_state(FaqStates.first_line)
 
 
-@router.callback_query(FaqStates.first_line, F.text == "no")
-async def faq_yes(msg: Message, state: FSMContext):
-    await msg.answer(standartMessages.back_to_services)
-    await state.clear()
-
-
-@router.callback_query(FaqStates.first_line, F.text == "yes")
-async def faq_no(msg: Message, state: FSMContext):
-    await msg.answer(standartMessages.contacts)
-    await state.clear()
+@router.callback_query(FaqStates.first_line)
+async def faq(callback: CallbackQuery, state: FSMContext):
+    if callback.data == "no":
+        await callback.message.answer(standartMessages.back_to_services)
+        await state.clear()
+        await callback.answer()
+    elif callback.data == "yes":
+        await callback.message.answer(standartMessages.contacts, parse_mode="HTML")
+        await state.clear()
+        await callback.answer()

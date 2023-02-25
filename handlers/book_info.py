@@ -1,8 +1,10 @@
+import os
+
 from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery, InputMediaDocument, FSInputFile
 
 import keyboards.common_kb
 import standartMessages
@@ -24,9 +26,19 @@ async def cmd_thebook(msg: Message, state: FSMContext):
 
 @router.callback_query(TheBookStates.first_line)
 async def thebook_first(callback: CallbackQuery, state: FSMContext):
-    '''TODO реализовать отправку фрагментов книг и отзывов'''
     if callback.data == "yes":
-        await callback.message.answer(standartMessages.advert, reply_markup=keyboards.common_kb.get_yes_no_keyboard())
+        root_path = os.getcwd()
+        file1 = FSInputFile(root_path + r"\documents\Rodoslovnaya kniga.pdf", filename="Родословная книга.pdf")
+        file2 = FSInputFile(root_path + r"\documents\Rodoslovnaya kniga.pdf",
+                            filename="Историческая родословная касимовских татар.pdf")
+        file3 = FSInputFile(root_path + r"\documents\Chetyre veka istorii odnoy semyi.pdf",
+                            filename="Четыре века истории одной семьи.pdf")
+        file3 = FSInputFile(root_path + r"\documents\Отзывы.pdf",
+                            filename="Отзывы.pdf")
+        await callback.message.answer_media_group([InputMediaDocument(media=file1),
+                                                   InputMediaDocument(media=file2),
+                                                   InputMediaDocument(media=file3, caption=standartMessages.advert)])
+        await callback.message.answer("Заказать книгу?", reply_markup=keyboards.common_kb.get_yes_no_keyboard())
         await state.set_state(TheBookStates.second_line)
         await callback.answer()
     elif callback.data == "no":
@@ -38,7 +50,7 @@ async def thebook_first(callback: CallbackQuery, state: FSMContext):
 @router.callback_query(TheBookStates.second_line)
 async def thebook_want_to_buy(callback: CallbackQuery, state: FSMContext):
     if callback.data == "yes":
-        await callback.message.answer(standartMessages.contacts)
+        await callback.message.answer(standartMessages.contacts, parse_mode="HTML")
         await state.clear()
         await callback.answer()
     elif callback.data == "no":
