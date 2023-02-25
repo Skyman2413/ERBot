@@ -36,10 +36,11 @@ async def thebook_first(callback: CallbackQuery, state: FSMContext):
                             filename="Четыре века истории одной семьи.pdf")
         file4 = FSInputFile(root_path + r"\documents\Отзывы.pdf",
                             filename="Отзывы.pdf")
+        await callback.message.answer(standartMessages.advert)
         await callback.message.answer_media_group([InputMediaDocument(media=file1),
                                                    InputMediaDocument(media=file2),
                                                    InputMediaDocument(media=file3),
-                                                   InputMediaDocument(media=file4, caption=standartMessages.advert)])
+                                                   InputMediaDocument(media=file4)])
         await callback.message.answer("Заказать книгу?", reply_markup=keyboards.common_kb.get_yes_no_keyboard())
         await state.set_state(TheBookStates.second_line)
         await callback.answer()
@@ -47,6 +48,13 @@ async def thebook_first(callback: CallbackQuery, state: FSMContext):
         await callback.message.answer(standartMessages.back_to_services)
         await state.clear()
         await callback.answer()
+
+
+@router.callback_query(TheBookStates.first_line, Command(commands=["reviews"]))
+async def send_reviews(msg: Message):
+    root_path = os.getcwd()
+    file_reviews = FSInputFile(root_path + r"\documents\Отзывы.pdf", filename="Отзывы.pdf")
+    await msg.answer_document(file_reviews, caption="Отзывы")
 
 
 @router.callback_query(TheBookStates.second_line)
