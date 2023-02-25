@@ -4,7 +4,7 @@ from aiogram import Router, F
 from aiogram.filters import Command, Text
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import Message, CallbackQuery, InputMediaDocument, FSInputFile
+from aiogram.types import Message, CallbackQuery, InputMediaDocument, FSInputFile, InputMediaPhoto
 
 import keyboards.common_kb
 import standartMessages
@@ -20,50 +20,27 @@ class TheBookStates(StatesGroup):
 @router.message(Command(commands=["thebook"]))
 @router.message(Text(text="Купить книгу"))
 async def cmd_thebook(msg: Message, state: FSMContext):
-    await msg.answer(standartMessages.thebook, reply_markup=keyboards.common_kb.get_yes_no_keyboard(),
-                     parse_mode="HTML")
+    root_path = os.getcwd()
+    file1 = FSInputFile(root_path + r"\documents\Oblozhki.jpg")
+    file2 = FSInputFile(root_path + r"\documents\Chetyre_veka_istorii_odnoy_semi.jpg")
+    file3 = FSInputFile(root_path + r"\documents\Istoricheskaya_rodoslovnaya_kasimovskikh_tatar.jpg")
+    file4 = FSInputFile(root_path + r"\documents\Rodoslovnaya_kniga.jpg")
+    await msg.answer(standartMessages.thebook, parse_mode="HTML", disable_web_page_preview=True)
+    await msg.answer_media_group([InputMediaPhoto(media=file1), InputMediaPhoto(media=file2),
+                                  InputMediaPhoto(media=file3), InputMediaPhoto(media=file4)])
+    await msg.answer("Посмотреть отрывок из книги и отзывы?", reply_markup=keyboards.common_kb.get_yes_no_keyboard())
     await state.set_state(TheBookStates.first_line)
 
 
 @router.callback_query(TheBookStates.first_line)
 async def thebook_first(callback: CallbackQuery, state: FSMContext):
     if callback.data == "yes":
-        root_path = os.getcwd()
-        file1 = FSInputFile(root_path + r"\documents\Rodoslovnaya kniga.pdf", filename="Родословная книга.pdf")
-        file2 = FSInputFile(root_path + r"\documents\Rodoslovnaya kniga.pdf",
-                            filename="Историческая родословная касимовских татар.pdf")
-        file3 = FSInputFile(root_path + r"\documents\Chetyre veka istorii odnoy semyi.pdf",
-                            filename="Четыре века истории одной семьи.pdf")
-        file4 = FSInputFile(root_path + r"\documents\Отзывы.pdf",
-                            filename="Отзывы.pdf")
-        await callback.message.answer(standartMessages.advert)
-        await callback.message.answer_media_group([InputMediaDocument(media=file1),
-                                                   InputMediaDocument(media=file2),
-                                                   InputMediaDocument(media=file3),
-                                                   InputMediaDocument(media=file4)])
-        await callback.message.answer("Заказать книгу?", reply_markup=keyboards.common_kb.get_yes_no_keyboard())
-        await state.set_state(TheBookStates.second_line)
+        await callback.message.answer(standartMessages.advert, parse_mode="HTML", disable_web_page_preview=True)
         await callback.answer()
+
     elif callback.data == "no":
         await callback.message.answer(standartMessages.back_to_services)
         await state.clear()
         await callback.answer()
 
 
-@router.callback_query(TheBookStates.first_line, Command(commands=["reviews"]))
-async def send_reviews(msg: Message):
-    root_path = os.getcwd()
-    file_reviews = FSInputFile(root_path + r"\documents\Отзывы.pdf", filename="Отзывы.pdf")
-    await msg.answer_document(file_reviews, caption="Отзывы")
-
-
-@router.callback_query(TheBookStates.second_line)
-async def thebook_want_to_buy(callback: CallbackQuery, state: FSMContext):
-    if callback.data == "yes":
-        await callback.message.answer(standartMessages.contacts, parse_mode="HTML")
-        await state.clear()
-        await callback.answer()
-    elif callback.data == "no":
-        await callback.message.answer(standartMessages.back_to_services)
-        await state.clear()
-        await callback.answer()

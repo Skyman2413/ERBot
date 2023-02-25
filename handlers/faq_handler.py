@@ -17,17 +17,17 @@ class FaqStates(StatesGroup):
 @router.message(Command(commands=["FAQ"]))
 async def cmd_faq(msg: Message, state: FSMContext):
     await msg.answer(standartMessages.faq, reply_markup=keyboards.common_kb.get_yes_no_keyboard(),
-                     parse_mode="HTML")
+                     parse_mode="HTML", disable_web_page_preview=True)
     await state.set_state(FaqStates.first_line)
 
 
 @router.callback_query(FaqStates.first_line)
 async def faq(callback: CallbackQuery, state: FSMContext):
     if callback.data == "no":
-        await callback.message.answer(standartMessages.back_to_services)
+        await callback.message.answer(standartMessages.back_to_services, disable_web_page_preview=True)
         await state.clear()
         await callback.answer()
     elif callback.data == "yes":
-        await callback.message.answer(standartMessages.contacts, parse_mode="HTML")
+        await callback.message.answer(standartMessages.contacts, parse_mode="HTML", disable_web_page_preview=True)
         await state.clear()
         await callback.answer()

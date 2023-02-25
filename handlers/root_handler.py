@@ -22,7 +22,7 @@ async def cmd_start(msg: Message, state: FSMContext):
 @router.message(Text(text="Контакты"))
 async def cmd_contacts(msg: Message, state: FSMContext):
     await state.clear()
-    await msg.answer(standartMessages.contacts, parse_mode="HTML")
+    await msg.answer(standartMessages.contacts, parse_mode="HTML", disable_web_page_preview=True)
 
 
 @router.message(Command(commands=["documents"]))
