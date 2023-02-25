@@ -1,7 +1,7 @@
 import os
 
 from aiogram import Router, F
-from aiogram.filters import Command
+from aiogram.filters import Command, Text
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery, InputMediaDocument, FSInputFile
@@ -18,6 +18,7 @@ class TheBookStates(StatesGroup):
 
 
 @router.message(Command(commands=["thebook"]))
+@router.message(Text(text="Купить книгу"))
 async def cmd_thebook(msg: Message, state: FSMContext):
     await msg.answer(standartMessages.thebook, reply_markup=keyboards.common_kb.get_yes_no_keyboard(),
                      parse_mode="HTML")

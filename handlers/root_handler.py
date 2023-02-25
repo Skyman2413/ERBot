@@ -1,24 +1,26 @@
 # coding: utf8
-from pathlib import Path
-
 from aiogram import Router
-from aiogram.filters import Command
+from aiogram.filters import Command, Text
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, FSInputFile, InputMediaDocument
 import os
+
+import keyboards.common_kb
 import standartMessages
 
 router = Router()
 
 
 @router.message(Command(commands=["start"]))
+@router.message(Text(text="Помощь"))
 async def cmd_start(msg: Message, state: FSMContext):
     await state.clear()
-    await msg.answer(standartMessages.start, parse_mode="HTML")
+    await msg.answer(standartMessages.start, parse_mode="HTML", reply_markup=keyboards.common_kb.default_keyboard())
 
 
 @router.message(Command(commands=["contacts"]))
-async def cmd_start(msg: Message, state: FSMContext):
+@router.message(Text(text="Контакты"))
+async def cmd_contacts(msg: Message, state: FSMContext):
     await state.clear()
     await msg.answer(standartMessages.contacts, parse_mode="HTML")
 

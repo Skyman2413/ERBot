@@ -15,6 +15,7 @@ class ServiceStates(StatesGroup):
 
 
 @router.message(Command(commands=["services"]))
+@router.message(Text(text="Услуги"))
 async def cmd_services(msg: Message, state: FSMContext):
     await msg.answer(standartMessages.services, parse_mode="HTML")
     await state.set_state(ServiceStates.select_service)
