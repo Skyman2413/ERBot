@@ -16,8 +16,9 @@ class FaqStates(StatesGroup):
 
 @router.message(Command(commands=["FAQ"]))
 async def cmd_faq(msg: Message, state: FSMContext):
-    await msg.answer(standartMessages.faq, reply_markup=keyboards.common_kb.get_yes_no_keyboard(),
+    await msg.answer(standartMessages.faq,
                      parse_mode="HTML", disable_web_page_preview=True)
+    await msg.answer("У Вас остались вопросы?", reply_markup=keyboards.common_kb.get_yes_no_keyboard())
     await state.set_state(FaqStates.first_line)
 
 
