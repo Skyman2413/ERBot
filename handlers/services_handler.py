@@ -12,9 +12,10 @@ router = Router()
 
 @router.message(Command(commands=["services"]))
 @router.message(Text(text="Услуги"))
-async def cmd_services(msg: Message):
+async def cmd_services(msg: Message, state:FSMContext):
     await msg.answer(standartMessages.services, parse_mode="HTML", disable_web_page_preview=True,
                      reply_markup=keyboards.services_kb.services_kb())
+    await state.clear()
 
 
 @router.callback_query(Text(text="1"))
