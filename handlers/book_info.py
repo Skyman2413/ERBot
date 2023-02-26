@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 from aiogram import Router
 from aiogram.filters import Command, Text
 from aiogram.fsm.context import FSMContext
@@ -18,11 +18,11 @@ class TheBookStates(StatesGroup):
 @router.message(Command(commands=["thebook"]))
 @router.message(Text(text="Купить книгу"))
 async def cmd_thebook(msg: Message, state: FSMContext):
-    root_path = os.getcwd()
-    file1 = FSInputFile(root_path + r"\documents\Oblozhki.jpg")
-    file2 = FSInputFile(root_path + r"\documents\Chetyre_veka_istorii_odnoy_semi.jpg")
-    file3 = FSInputFile(root_path + r"\documents\Istoricheskaya_rodoslovnaya_kasimovskikh_tatar.jpg")
-    file4 = FSInputFile(root_path + r"\documents\Rodoslovnaya_kniga.jpg")
+    root_path = Path.cwd()
+    file1 = FSInputFile(Path(root_path, "documents", "Oblozhki.jpg"))
+    file2 = FSInputFile(Path(root_path, "documents", "Chetyre_veka_istorii_odnoy_semi.jpg"))
+    file3 = FSInputFile(Path(root_path, "documents", "Istoricheskaya_rodoslovnaya_kasimovskikh_tatar.jpg"))
+    file4 = FSInputFile(Path(root_path, "documents", "Rodoslovnaya_kniga.jpg"))
     await state.set_state(TheBookStates.first_line)
     await msg.answer(standartMessages.thebook, parse_mode="HTML", disable_web_page_preview=True)
     await msg.answer_media_group([InputMediaPhoto(media=file1), InputMediaPhoto(media=file2),
