@@ -29,6 +29,7 @@ async def cmd_documents(msg: Message, state: FSMContext):
     root_path = Path.cwd()
     file1 = FSInputFile(Path(root_path, "documents", "Диплом кандидата.jpg"), filename="Диплом кандидата.jpg")
     file2 = FSInputFile(Path(root_path, "documents", "Диплом магистра.jpg"), filename="Диплом магистра.jpg")
+    await msg.answer(standartMessages.documents, parse_mode="HTML")
     await msg.answer_media_group([InputMediaDocument(media=file1),
-                                  InputMediaDocument(media=file2, caption=standartMessages.documents)])
+                                  InputMediaDocument(media=file2)])
     await state.clear()
