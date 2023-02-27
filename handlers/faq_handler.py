@@ -1,5 +1,5 @@
 from aiogram import Router
-from aiogram.filters import Command
+from aiogram.filters import Command, Text
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
@@ -22,13 +22,15 @@ async def cmd_faq(msg: Message, state: FSMContext):
     await state.set_state(FaqStates.first_line)
 
 
-@router.callback_query(FaqStates.first_line)
-async def faq(callback: CallbackQuery, state: FSMContext):
-    if callback.data == "no":
-        await callback.message.answer(standartMessages.back_to_services, disable_web_page_preview=True)
-        await state.clear()
-        await callback.answer()
-    elif callback.data == "yes":
-        await callback.message.answer(standartMessages.contacts, parse_mode="HTML", disable_web_page_preview=True)
-        await state.clear()
-        await callback.answer()
+@router.callback_query(FaqStates.first_line, Text(text="no"))
+async def faq_no(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer(standartMessages.back_to_services, disable_web_page_preview=True)
+    await state.clear()
+    await callback.answer()
+
+
+@router.callback_query(FaqStates.first_line, Text(text="yes"))
+async def faq_yes(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer(standartMessages.contacts, parse_mode="HTML", disable_web_page_preview=True)
+    await state.clear()
+    await callback.answer()

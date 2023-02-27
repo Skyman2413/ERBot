@@ -30,13 +30,14 @@ async def cmd_thebook(msg: Message, state: FSMContext):
     await msg.answer("Посмотреть отрывок из книги и отзывы?", reply_markup=keyboards.common_kb.get_yes_no_keyboard())
 
 
-@router.callback_query(TheBookStates.first_line)
-async def thebook_first(callback: CallbackQuery, state: FSMContext):
-    if callback.data == "yes":
-        await callback.message.answer(standartMessages.advert, parse_mode="HTML", disable_web_page_preview=True)
-        await callback.answer()
+@router.callback_query(TheBookStates.first_line, Text(text="yes"))
+async def thebook_first_yes(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer(standartMessages.advert, parse_mode="HTML", disable_web_page_preview=True)
+    await callback.answer()
 
-    elif callback.data == "no":
-        await callback.message.answer(standartMessages.back_to_services)
-        await state.clear()
-        await callback.answer()
+
+@router.callback_query(TheBookStates.first_line, Text(text="no"))
+async def thebook_first_no(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer(standartMessages.back_to_services)
+    await state.clear()
+    await callback.answer()
