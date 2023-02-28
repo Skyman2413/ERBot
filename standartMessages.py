@@ -23,8 +23,8 @@ contacts = '''Юрий Ермолаев
 '''
 advert = '''<b>Фрагменты книг</b>:
 -	<a href="https://disk.yandex.ru/i/W8Cp6yM5yAto5w">Родословная книга</a>
--	<a href="https://disk.yandex.ru/i/mnKsWoGFwYvFoQ">Историческая родословная касимовских татар</a>
--	<a href="https://disk.yandex.ru/i/5gLZJRhfWJ1mng">Четыре века истории одной семьи</a>
+-	<a href="https://disk.yandex.ru/d/g_Ibajf5R5SeCA">Историческая родословная касимовских татар</a>
+-	<a href="https://disk.yandex.ru/i/PAnZ7kBoGi8Qvg">Четыре века истории одной семьи</a>
 В данный момент к заказу доступна книга «Четыре века истории одной семьи». Цена экземпляра составляет 10400 рублей, включая почтовую отправку по РФ.
 Для заказа книги обратитесь в /contacts
 <a href="https://disk.yandex.ru/i/AO9XJLi1ZQ594Q">Посмотреть отзывы</a>
